@@ -33,7 +33,7 @@ debirf_exec apt-get --no-install-recommends --assume-yes install \
  blktool \
  bonnie++ \
  cryptsetup \
- ddrescue \
+ gddrescue \
  dosfstools \
  e2tools \
  e2undel \
