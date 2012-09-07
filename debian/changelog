@@ -6,6 +6,10 @@ debirf (0.33~pre1) UNRELEASED; urgency=low
   
   [ Matt Taggart ]
   * ddrescue was dropped in favor of gddrescue (Closes: #685138)
+  
+  [ Daniel Kahn Gillmor ]
+  * removed scsitools from rescue module due to maintainer script breakage
+    under fakechroot (see #686881)
 
  -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>  Mon, 16 Jan 2012 20:36:46 -0500
 

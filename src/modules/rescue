@@ -55,7 +55,6 @@ debirf_exec apt-get --no-install-recommends --assume-yes install \
  recover \
  screen \
  scrub \
- scsitools \
  sdparm \
  sg3-utils \
  smartmontools \
