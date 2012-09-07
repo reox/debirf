@@ -13,6 +13,7 @@ debirf (0.33~pre1) UNRELEASED; urgency=low
   * work around flakey insserv under debootstrap --variant=fakechroot (see
     #686965)
   * the above two changes suffice to: (Closes: #655555)
+  * debian/changelog: bumped Standards-Version to 3.9.3 (no changes needed)
 
  -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>  Fri, 07 Sep 2012 14:52:38 -0400
 
