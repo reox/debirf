@@ -4,6 +4,9 @@ debirf (0.35) unstable; urgency=medium
     Lamb) (Closes: #777183)
   * use real ldconfig after building nest (Closes: #754457)
   * Bumped Standards-Version to 3.9.6 (no changes needed)
+  * added new DEBIRF_EXTRA_PACKAGES variable to $profile/debirf.conf to
+    get packages pulled in during debootstrap (lets us avoid some postinst
+    scripts inserv failures during subsequent installs).
 
  -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>  Thu, 09 Jul 2015 10:26:59 -0400
 
