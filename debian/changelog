@@ -10,8 +10,11 @@ debirf (0.33~pre1) UNRELEASED; urgency=low
   [ Daniel Kahn Gillmor ]
   * removed scsitools from rescue module due to maintainer script breakage
     under fakechroot (see #686881)
+  * work around flakey insserv under debootstrap --variant=fakechroot (see
+    #686965)
+  * the above two changes suffice to: (Closes: #655555)
 
- -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>  Mon, 16 Jan 2012 20:36:46 -0500
+ -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>  Fri, 07 Sep 2012 14:52:38 -0400
 
 debirf (0.32) unstable; urgency=low
 
