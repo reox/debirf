@@ -58,7 +58,6 @@ debirf_exec apt-get --no-install-recommends --assume-yes install \
  sdparm \
  sg3-utils \
  smartmontools \
- smp-utils \
  testdisk \
  testdisk \
  tofrodos \
@@ -71,6 +70,11 @@ debirf_exec apt-get --no-install-recommends --assume-yes install \
 # to that.
 
 debirf_exec apt-get --no-install-recommends --assume-yes install partimage || true
+
+# smp-utils was introduced only in wheezy, so we should be able to
+# build a rescue image without it (e.g. a squeeze system):
+
+debirf_exec apt-get --no-install-recommends --assume-yes install  smp-utils || true
 
 # let's try some different configurations of uboot-related tools, since the
 # package names seem to be in flux right now:
