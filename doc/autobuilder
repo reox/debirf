@@ -13,7 +13,7 @@
 
 PROFILE_LOC=/usr/share/doc/debirf/example-profiles
 DATE_NOW=$(date +%F)
-SUITES="stable unstable"
+SUITES="${SUITES:-stable unstable}"
 ARCH="$(dpkg --print-architecture)"
 
 if ! dpkg -l grub-common syslinux-common xorriso >/dev/null ; then
