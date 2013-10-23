@@ -32,6 +32,7 @@ EOF
 debirf_exec apt-get --no-install-recommends --assume-yes install \
  blktool \
  bonnie++ \
+ chntpw \
  cryptsetup \
  gddrescue \
  dosfstools \
