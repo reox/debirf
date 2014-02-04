@@ -37,7 +37,6 @@ debirf_exec apt-get --no-install-recommends --assume-yes install \
  gddrescue \
  dosfstools \
  e2tools \
- e2undel \
  eject \
  fatresize \
  foremost \
@@ -53,7 +52,6 @@ debirf_exec apt-get --no-install-recommends --assume-yes install \
  mtd-utils \
  parted \
  pciutils \
- recover \
  screen \
  scrub \
  sdparm \
