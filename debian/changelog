@@ -1,3 +1,11 @@
+debirf (0.34) unstable; urgency=medium
+
+  * Don't try to make device nodes within the chroot (Closes: #732322)
+  * remove e2undel and recover from the rescue image, since they were both
+    removed from debian.
+
+ -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>  Tue, 24 Jun 2014 16:07:32 -0400
+
 debirf (0.33) unstable; urgency=low
 
   [ Jameson Rollins ]
