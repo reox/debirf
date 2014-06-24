@@ -1,0 +1,8 @@
+a0_motd
+a0_prep-root
+install-kernel
+network
+root-bashrc
+serial-terminal
+z0_remove-locales
+z1_clean-root

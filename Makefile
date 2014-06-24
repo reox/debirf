@@ -11,11 +11,18 @@ VERSION := `head -n1 debian/changelog | sed 's/.*(\([^-]*\).*/\1/'`
 PREFIX ?= /usr
 MANPREFIX ?= $(PREFIX)/share/man
 
-PROFILES = doc/example-profiles/minimal.tgz doc/example-profiles/rescue.tgz doc/example-profiles/xkiosk.tgz
+PROFILES = minimal rescue xkiosk
 
-default: $(PROFILES)
+PROFILE_TARBALLS = $(foreach profile,$(PROFILES),doc/example-profiles/$(profile).tgz)
+PROFILE_MODULES = $(foreach profile,$(PROFILES),doc/example-profiles/$(profile)/modules)
 
-doc/example-profiles/%.tgz: doc/example-profiles/%
+default: $(PROFILE_TARBALLS)
+
+doc/example-profiles/%/modules: doc/example-profiles/%.modules
+	mkdir -p "$@"
+	for m in $(shell cat $<); do ln -s /usr/share/debirf/modules/$$m $@/; done
+
+doc/example-profiles/%.tgz: doc/example-profiles/% doc/example-profiles/%/modules
 	(cd doc/example-profiles && tar c --exclude='*~' $(notdir $<)) | gzip -9 -n > "$@"
 
 install: installman profiles
@@ -37,6 +44,7 @@ installman:
 	gzip -d man/*/*
 
 clean:
-	rm -f $(PROFILES)
+	rm -f $(PROFILE_TARBALLS)
+	rm -rf $(PROFILE_MODULES)
 
 .PHONY: default install installman profiles clean

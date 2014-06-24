@@ -1,0 +1,13 @@
+a0_add_extra_repos
+a0_add_security_repos
+a0_motd
+a0_prep-root
+install-kernel
+install-runit
+lock-root-passwd
+network-dhcp
+root-bashrc
+serial-terminal
+xkiosk
+z0_remove-locales
+z1_clean-root
