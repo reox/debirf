@@ -32,10 +32,10 @@ chmod a+x "${DEBIRF_ROOT}${SCRIPTED_GETTY}"
 debirf_exec chown root:root "${SCRIPTED_GETTY}"
 
 # make sure the basic serial devices are present
-debirf_exec mknod dev/ttyS0 c 4 64
-debirf_exec mknod dev/ttyS1 c 4 65
-debirf_exec mknod dev/ttyS2 c 4 66
-debirf_exec mknod dev/ttyS3 c 4 67
+mknod "${DEBIRF_ROOT}/dev/ttyS0" c 4 64
+mknod "${DEBIRF_ROOT}/dev/ttyS1" c 4 65
+mknod "${DEBIRF_ROOT}/dev/ttyS2" c 4 66
+mknod "${DEBIRF_ROOT}/dev/ttyS3" c 4 67
 
 if grep "$SCRIPTED_GETTY" "$INITTAB" | grep -q -v "^[[:space:]]*#" ; then
     echo "inittab already has a getty on the console."
