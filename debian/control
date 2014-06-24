@@ -7,7 +7,6 @@ Build-Depends: debhelper (>= 7.0)
 Standards-Version: 3.9.3
 Homepage: http://cmrg.fifthhorseman.net/wiki/debirf
 Vcs-Git: git://finestructure.net/debirf
-Dm-Upload-Allowed: yes
 
 Package: debirf
 Architecture: all
