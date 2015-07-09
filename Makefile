@@ -7,6 +7,7 @@
 # Licensed under GPL v3 or later
 
 VERSION := `head -n1 debian/changelog | sed 's/.*(\([^-]*\).*/\1/'`
+BUILD_DATE := $(shell dpkg-parsechangelog --show-field Date)
 
 PREFIX ?= /usr
 MANPREFIX ?= $(PREFIX)/share/man
@@ -23,7 +24,7 @@ doc/example-profiles/%/modules: doc/example-profiles/%.modules
 	for m in $(shell cat $<); do ln -s /usr/share/debirf/modules/$$m $@/; done
 
 doc/example-profiles/%.tgz: doc/example-profiles/% doc/example-profiles/%/modules
-	(cd doc/example-profiles && tar c --exclude='*~' $(notdir $<)) | gzip -9 -n > "$@"
+	(cd doc/example-profiles && tar c --mtime="$(BUILD_DATE)" --owner=0 --group=0 --numeric-owner --mode=u=rwX,go=rX --exclude='*~' $(notdir $<)) | gzip -9 -n > "$@"
 
 install: installman profiles
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
