@@ -3,6 +3,7 @@ debirf (0.35) unstable; urgency=medium
   * reproducibility: make example profiles reproducible (thanks, Chris
     Lamb) (Closes: #777183)
   * use real ldconfig after building nest (Closes: #754457)
+  * Bumped Standards-Version to 3.9.6 (no changes needed)
 
  -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>  Thu, 09 Jul 2015 10:26:59 -0400
 
