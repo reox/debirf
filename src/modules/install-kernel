@@ -54,7 +54,7 @@ echo "extracting kernel package $KPKG..."
 debirf_exec dpkg --extract /var/cache/apt/archives/"$KPKG" /
 
 # install the module init tools, since they are needed for depmod
-debirf_exec apt-get --assume-yes install module-init-tools
+debirf_exec apt-get --assume-yes install kmod
 
 # depmod to create module list
 KVERS=$(ls -1 -t "$DEBIRF_ROOT/lib/modules" | head -n1)
