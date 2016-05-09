@@ -42,7 +42,8 @@ export DEVICE_ARCHIVE=${DEVICE_ARCHIVE:-/usr/share/debirf/devices.tar.gz}
 export INCLUDE=\
 busybox-static,\
 gpgv,\
-less
+less,\
+klibc-utils
 
 # list of packages to exclude from debootstrap
 export EXCLUDE=\
@@ -96,22 +97,27 @@ EOF
 create_debootstrap() {
     msg "distro/suite: ${DEBIRF_DISTRO}/${DEBIRF_SUITE}"
 
-    local OPTS="--include=$INCLUDE${DEBIRF_EXTRA_PACKAGES:+,}$DEBIRF_EXTRA_PACKAGES --exclude=$EXCLUDE $DEBIRF_SUITE $DEBIRF_ROOT $DEBIRF_MIRROR"
+    local OPTS="--include=$INCLUDE --exclude=$EXCLUDE $DEBIRF_SUITE $DEBIRF_ROOT $DEBIRF_MIRROR"
+    local DEBOOTSTRAP=$(which debootstrap)
 
     if [ "$DEBIRF_KEYRING" ] ; then
         OPTS="--keyring='$DEBIRF_KEYRING' $OPTS"
     fi
 
     if [ "$DEBIRF_ARCH" ] ; then
+        # Check if we can support the architecture
+        (which qemu-debootstrap) || failure "Could not find qemu-debootstrap, which is needed for foreign bulding. You might want to install it?"
+        local DEBOOTSTRAP=$(which qemu-debootstrap)
+
         OPTS="--arch='$DEBIRF_ARCH' $OPTS"
     fi
 
     mkdir -p "$DEBIRF_ROOT"
 
     if [ "$ROOT_BUILD" = 'true' ] ; then
-	eval "/usr/sbin/debootstrap $OPTS"
+        eval "$DEBOOTSTRAP $OPTS"
     else
-	eval "fakeroot_if_needed fakechroot /usr/sbin/debootstrap --variant=fakechroot $OPTS"
+        eval "fakeroot_if_needed fakechroot $DEBOOTSTRAP --variant=fakechroot $OPTS"
     fi
 
     # FIXME: should this be done in a trap so that the log
@@ -149,7 +155,7 @@ pack_rootfs() {
 
     # abort with a failure if our attempts to build the rootfs fail:
     set -o pipefail
-    fakeroot_if_needed bash -c ". $DEBIRF_COMMON && FAKECHROOT_EXCLUDE_PATH=/does-not-exist debirf_exec sh -c 'find * | grep -v -e ^run/ | cpio --create -H newc'" | gzip -9 > "$1"
+    fakeroot_if_needed bash -c ". $DEBIRF_COMMON && debirf_exec sh -c 'find * | cpio --create -H newc'" | gzip -9 > "$1"
 }
 export -f pack_rootfs
 
@@ -178,8 +184,8 @@ create_initrd_nested() {
     done
 
     # copy in run-init and needed libraries
-    cp -f /usr/lib/klibc/bin/run-init "$NEST_ROOT"/bin/
-    cp -f /lib/klibc-* "$NEST_ROOT"/lib/
+    cp -f "$DEBIRF_ROOT"/usr/lib/klibc/bin/run-init "$NEST_ROOT"/bin/
+    cp -f "$DEBIRF_ROOT"/lib/klibc-* "$NEST_ROOT"/lib/
 
     # symlink /lib64 if that is done on host
     # FIXME: is this necessary?
@@ -211,8 +217,21 @@ if (grep -q break=bottom /proc/cmdline); then
   /bin/sh
 fi
 umount /proc
+
+mount -t sysfs -o nodev,noexec,nosuid sysfs /newroot/sys
+mount -t proc -o nodev,noexec,nosuid proc /newroot/proc
+
+# Need to mound dev first
+mount -t devtmpfs -o nosuid,mode=0755 udev /newroot/dev
+ln -s /newroot/dev /dev
+
+# validate init
+if ! /bin/run-init -n /newroot /sbin/init; then
+    echo "The Requested Init was not found"
+    /bin/sh
+fi
 echo running /sbin/init...
-exec /bin/run-init . /sbin/init < ./dev/console > ./dev/console
+exec /bin/run-init /newroot /sbin/init < /newroot/dev/console > /newroot/dev/console
 EOF
     chmod a+x "$NEST_ROOT"/init
 
