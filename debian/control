@@ -21,7 +21,8 @@ Depends:
 Recommends:
  lsb-release,
  xorriso,
- grub-common (>= 1.98+20100804) | syslinux-common
+ grub-common (>= 1.98+20100804) | syslinux-common,
+ qemu-user-static
 Description: build a kernel and initrd to run Debian from RAM
  debirf (DEBian on Initial Ram Filesystem) is a set of tools designed
  to create and prepare a kernel and initial ram filesystem that can
